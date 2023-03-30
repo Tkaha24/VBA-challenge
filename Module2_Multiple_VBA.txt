@@ -1,0 +1,136 @@
+Sub Multiple_year_stock()
+    ' LOOP THROUGH ALL SHEETS
+        For Each ws In Worksheets
+        'LastRow = ws.Cells(Rows.Count, "B").End(xlUp).Row + 1
+        
+        
+    'set initial variable
+   
+Dim ticker_Name As String
+   
+Dim WorksheetName As String
+Dim Ticker As String
+Dim YearlyChange As Double
+Dim PercentChange As Double
+ 
+
+        ' Grabbed the WorksheetName
+        WorksheetName = ws.Name
+        
+        
+        ' create columns to the First Column Header
+             
+        ws.Cells(1, 9).Value = "Ticker"
+        ws.Cells(1, 10).Value = "Yearly Change"
+        ws.Cells(1, 11).Value = "Percent Change"
+        ws.Cells(1, 12).Value = "Total Stock Volume"
+        'ws.Cells(2, 12).Value = "ticker_Total"
+   
+   'set initial variable for holding ticker total in sum table
+   Dim ticker_Total As Double
+   Dim Year As Double
+   Dim Percent As Integer
+   
+   ticker_Total = 0
+   Year_Change = 0
+   Percent_total = 0
+   
+   
+     ' Keep track of the location for each ticker in the summary table
+  Dim Summary_Table_Row As Double
+  Summary_Table_Row = 2
+  
+     ' Determine the Last Row
+        lastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+            
+         
+     ' Loop through all ticker_volume
+  For i = 2 To lastRow
+  'For g = 2 To LastRow
+   
+
+        
+        
+       ' Check if we are still within the same ticker name, if it is not...
+     If ws.Cells(i - 1, 1).Value <> ws.Cells(i, 1).Value Then
+     
+     open_value = ws.Cells(i, 3).Value
+     'close_Value = Cells(i, 6).Value
+     
+     
+     
+     
+     End If
+       
+       
+       
+       
+       
+    If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+    'If Cells(i + 1, 1).Value <> Cells(g, 1).Value Then
+    
+          ' Set the Ticker name
+   ticker_Name = ws.Cells(i, 1).Value
+   'open_Value = Cells(i, 3).Value
+   close_Value = ws.Cells(i, 6).Value
+   
+   
+    
+          ' Add to the column Total
+      ticker_Total = ticker_Total + ws.Cells(i, 7).Value
+      Year_Change = close_Value - open_value
+      
+      Percent_total = (close_Value - open_value) / open_value
+      
+      
+
+      ' Print the Ticker name in the Summary Table
+       ws.Range("I" & Summary_Table_Row).Value = ticker_Name
+       ' ws.Range("J" & Summary_Table_Row).Value = Year_change
+
+      ' Print the ticker Amount to the Summary Table
+      ws.Range("L" & Summary_Table_Row).Value = ticker_Total
+      ws.Range("J" & Summary_Table_Row).Value = Year_Change
+      ws.Range("K" & Summary_Table_Row).Value = Percent_total
+      ws.Range("K" & Summary_Table_Row).NumberFormat = "0.00%"
+
+      ' Add one to the summary table row
+      Summary_Table_Row = Summary_Table_Row + 1
+      
+      ' Reset the ticker Total
+      ticker_Total = 0
+      Year_Change = 0
+
+    ' If the cell immediately following a row is the same ticker...
+    Else
+
+      ' Add to the ticker Total so total will be added with in ticker
+      ticker_Total = ticker_Total + ws.Cells(i, 7).Value
+      Year_Change = close_Value - open_value
+           
+                
+
+    End If
+    
+        If ws.Cells(i, 10).Value >= 0 Then
+    
+        ws.Cells(i, 10).Interior.ColorIndex = 4
+    
+ 
+        ElseIf ws.Cells(i, 10).Value <= 0 Then
+    
+        ws.Cells(i, 10).Interior.ColorIndex = 3
+    
+     End If
+
+  Next i
+
+Next
+
+
+    
+  
+
+
+
+End Sub

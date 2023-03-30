@@ -1,0 +1,103 @@
+
+Sub Multiple_year_stock()
+    ' LOOP THROUGH ALL SHEETS
+        For Each ws In Worksheets
+       
+        
+        
+    'set initial variable
+   Dim ticker_Name As String
+   
+Dim WorksheetName As String
+Dim Ticker As String
+ 
+        ' Grabbed the WorksheetName
+        WorksheetName = ws.Name
+        
+        
+        ' create columns to the First Column Header
+             
+        ws.Cells(1, 9).Value = "Ticker"
+         ws.Cells(1, 10).Value = "Total Stock Volume"
+     
+   
+   'set initial variable for holding ticker total in sum table
+   Dim ticker_Total As Double
+   
+   ticker_Total = 0
+   
+     ' Keep track of the location for each ticker in the summary table
+  Dim Summary_Table_Row As Double
+  Summary_Table_Row = 2
+  
+     ' Determine the Last Row
+        LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+            
+         
+     ' Loop through all ticker_volume
+  For i = 2 To LastRow
+
+   
+
+        
+        
+       ' Check if we are still within the same ticker name, if it is not...
+    If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+    
+    
+          ' Set the Ticker name
+   ticker_Name = Cells(i, 1).Value
+  
+   
+   
+    
+          ' Add to the Ticker Total
+      ticker_Total = ticker_Total + ws.Cells(i, 7).Value
+
+      
+      'Year change count calculation
+      Year_Change = Cells(i, 6).Value - (1 + Cells(i, 3).Value)
+     
+            
+
+      ' Print the Ticker name in the Summary Table
+    ws.Range("I" & Summary_Table_Row).Value = ticker_Name
+
+      ' Print the ticker Amount to the Summary Table
+      ws.Range("J" & Summary_Table_Row).Value = ticker_Total
+    
+      Summary_Table_Row = Summary_Table_Row + 1
+      
+      ' Reset the ticker Total
+      ticker_Total = 0
+    '
+      
+
+    ' If the cell immediately following a row is the same ticker...
+    Else
+
+      ' Add to the ticker Total so total will be added with in ticker
+      ticker_Total = ticker_Total + Cells(i, 7).Value
+'
+      'autofit to display data
+      
+
+
+    End If
+
+  Next i
+Next
+'ws.Summary_Table_Row.Column("I : J").AutoFit
+
+End Sub
+    
+    
+   
+         ' Message Box the unique Bank Name
+      'MsgBox (Cells(i, 1).Value)
+
+ 
+
+        
+
+
